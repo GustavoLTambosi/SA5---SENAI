@@ -1,0 +1,21 @@
+{% extends 'app_cliente/index.html' %}
+{% block content %}
+<div class="container">
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>id</th>
+            <th>nome</th>
+            <th>email</th>
+            <th>telefone</th>
+        </tr>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{cliente.id_cliente}}</td>
+            <td>{{cliente.nome}}</td>
+            <td>{{cliente.email}}</td>
+            <td>{{cliente.telefone}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
