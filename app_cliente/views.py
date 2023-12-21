@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from app_cliente.models import Cliente
 
 def home(request):
@@ -20,3 +20,27 @@ def lista(request):
         'clientes': Cliente.objects.all()
     }
     return render(request, 'app_cliente/clientes.html', clientes)
+
+def excluir(request, id_cliente):
+    excluir_cliente = get_object_or_404(Cliente, id_cliente=id_cliente)
+    excluir_cliente.delete()
+    return redirect('lista')
+
+def atualizar(request, id_cliente):
+    cliente = get_object_or_404(Cliente, id_cliente=id_cliente)
+    if request.POST:
+        cliente.nome = request.POST.get("nome")
+        cliente.email = request.POST.get("email")
+        cliente.telefone = request.POST.get("telefone")
+        cliente.save()
+        return redirect('lista')
+    return render(request, "app_cliente/atualizar.html", context={"cliente": cliente})
+
+def pesquisar(request):
+    nome = request.GET.get("nome")
+    if nome:
+        cliente = Cliente.objects.filter(nome__icontains=nome)
+    else:
+        cliente = Cliente.objects.all()
+
+    return render(request, "app_cliente/pesquisar.html", context={"cliente": cliente})
